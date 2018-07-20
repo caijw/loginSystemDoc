@@ -4,7 +4,7 @@ description: 关于登录系统的项目背景介绍
 
 # 项目背景
 
-设计一个登录系统，需要满足以下需求
+设计一个登录系统，需要满足以下需求：
 
 1. 具备登录注册功能
 2. 用户只能在一个设备上登录，切换登录终端时，其他已经登录的终端会被踢出
@@ -18,7 +18,7 @@ description: 关于登录系统的项目背景介绍
 4. 项目设计实现一周左右
 5. 交付物包括可运行的客户端以及后台项目代码，设计文档，可用github管理
 
-参考资料
+参考资料：
 
 1. C++实现ios和android跨平台：[https://github.com/dropbox/djinni](https://github.com/dropbox/djinni)
 2. grpc文档：[https://grpc.io/](https://grpc.io/)
