@@ -82,5 +82,43 @@ SSL/TLS协议已经被证明是高效、可靠和安全的协议，HTTPS的广�
 
 黑客无法窃听和篡改TS，因为用户无法窃听和篡改SSL/TLS安全通道。
 
+## 单一设备登录设计
+
+用户只能在一个设备上登录，切换登录终端时，其他已经登录的终端会被踢出。为了实现该功能，需要在用户在其他终端登录后，将上一个ST失效。
+
+### 表的改造
+
+在AS的登录验证中，维护了一个数据库表tb\_login\_info，tb\_login\_info表字段大概如下：
+
+| userID | S1 |
+| --- | --- |
+| kingweicai | abcdefg |
+
+为了保证新的登录生成的ST可以把原来的ST失效，需要给ST绑定一个id，并且将当前登录有效的ST的id保存在tb\_login\_info表中：
+
+| userID | S1 | seq |
+| --- | --- |
+| kingweicai | abcdefg | 1 |
+
+![&#x5355;&#x4E00;&#x767B;&#x5F55;&#x4EA4;&#x4E92;&#x56FE;](../.gitbook/assets/dan-yi-deng-lu-jiao-hu%20%281%29.png)
+
+### 算法的改造
+
+ST的生成算法需要优化为：ST = K\(AS, SS\)\(userId + timestamp + seq + ...\)
+
+当有新的登录请求，AS在生成ST时，查询tb\_login\_info，知道当前的seq，将seq+1的值作为新的ST生成算法中的seq，并且更新tb\_login\_info中该userId行的seq为seq+1。
+
+SS验证ST时，需要请求验证tb\_login\_info中该userId行的seq值，如果ST解密出来里面的seq比tb\_login\_info中的seq小的，则该ST是失效的ST，返回登录失效的响应，如果相等则是当前有效的ST正常响应用户请求。
+
+当tb\_login\_info中的seq值增长到很大的时候，需要重新从0开始计数。
+
+
+
+## 根据配置策略将已经登录的设备提出
+
+读取配置的策略，在tb\_login\_info表中，将命中策略的userId的那一行的值设置为无穷大的值（该值依赖相关数据库的实现），这样设置导致当前所有登录的设备都处于登录失效的状态。
+
+用户重新登录，AS查询tb\_login\_info表中，seq的值为无穷大，则新的seq需要重新从0开始计数，保证新的登录有效。
+
 
 
