@@ -18,9 +18,9 @@ K\(AS, SS\): AS 和 SS之间的共享对称加密密钥
 
 ST: session ticket，作为appClient访问SS的session ticket，生成规则为用K\(AS, SS\)作为密钥加密userId和时间戳 等数据，ST = K\(AS, SS\)\(userId + timestamp + ...\) 。
 
-![&#x767B;&#x5F55;&#x7CFB;&#x7EDF;&#x4EA4;&#x4E92;&#x56FE;](../.gitbook/assets/deng-lu-xi-tong-jia-gou%20%282%29.png)
-
 ### 登录系统交互流程
+
+![&#x767B;&#x5F55;&#x7CFB;&#x7EDF;&#x4EA4;&#x4E92;&#x56FE;](../.gitbook/assets/deng-lu-xi-tong-jia-gou%20%282%29.png)
 
 #### appClient向AS申请ST:
 
@@ -56,11 +56,11 @@ SS用K\(AS, SS\)解密ST，得到userId，timestamp等，判断userId是否跟�
 
 因此拖库造成了一定的安全风险: 黑客可以伪造客户端请求SS，黑客可以窃听和篡改ST。
 
-### 解决拖库风险
+## 解决本系统的拖库风险
 
 为了解决拖库问题，需要在对称加密体系中，引入非对称加密。
 
-#### SSL/TLS协议
+### SSL/TLS协议
 
 是一种非对称加密和对称加密结合起来的安全协议，被广泛应用于网络应用中，比如HTTPS，就是在http协议之上再构建一个SSL/TLS协议。
 
@@ -68,7 +68,7 @@ SSL/TLS wiki: [https://en.wikipedia.org/wiki/Transport\_Layer\_Security](https:/
 
 在三次TCP握手建立TCP通道后，SSL/TLS协议会进行4次握手，建立安全加密通道。在四次握手中，协商对称加密算法，交互各自的证书，并且验证证书完整性，最终用非对称加密算法协商完对称加密的秘钥，四次握手结束，安全通道建立，通信双方后续用对称加密算法进行通信。
 
-#### 改造本设计方案
+### 改造后的设计方案
 
 因此，本设计方案只需要进行适当的改造，即可预防拖库造成的风险。
 
