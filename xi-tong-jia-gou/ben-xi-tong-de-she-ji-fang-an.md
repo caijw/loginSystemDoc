@@ -1,5 +1,7 @@
 # 本系统的登录设计方案
 
+
+
 ## 借鉴kerberos协议的思想，设计一套安全的登录系统
 
 ### 名词定义
@@ -20,7 +22,7 @@ ST: session ticket，作为appClient访问SS的session ticket，生成规则为�
 
 ### 登录系统交互流程
 
-![&#x767B;&#x5F55;&#x7CFB;&#x7EDF;&#x4EA4;&#x4E92;&#x56FE;](../.gitbook/assets/deng-lu-xi-tong-jia-gou%20%282%29.png)
+![](../.gitbook/assets/deng-lu-xi-tong-jia-gou%20%281%29.png)
 
 #### appClient向AS申请ST:
 
@@ -72,7 +74,7 @@ SSL/TLS wiki: [https://en.wikipedia.org/wiki/Transport\_Layer\_Security](https:/
 
 因此，本设计方案只需要进行适当的改造，即可预防拖库造成的风险。
 
-![&#x767B;&#x5F55;&#x7CFB;&#x7EDF;&#x5728;&#x5B89;&#x5168;&#x901A;&#x9053;&#x4E2D;&#x4EA4;&#x4E92;](../.gitbook/assets/deng-lu-xi-tong-an-quan-tong-dao.png)
+![](../.gitbook/assets/deng-lu-xi-tong-an-quan-tong-dao%20%281%29.png)
 
 SSL/TLS协议已经被证明是高效、可靠和安全的协议，HTTPS的广泛应用可以证明这个事实。
 
@@ -110,7 +112,7 @@ SSL/TLS协议已经被证明是高效、可靠和安全的协议，HTTPS的广�
 | --- | --- |
 | kingweicai | abcdefg | 1 |
 
-![&#x5355;&#x4E00;&#x767B;&#x5F55;&#x4EA4;&#x4E92;&#x56FE;](../.gitbook/assets/dan-yi-deng-lu-jiao-hu%20%281%29.png)
+![&#x5355;&#x4E00;&#x767B;&#x5F55;&#x4EA4;&#x4E92;&#x56FE;](../.gitbook/assets/dan-yi-deng-lu-jiao-hu.png)
 
 ### 算法的改造
 
