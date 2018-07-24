@@ -88,7 +88,7 @@ SSL/TLS协议已经被证明是高效、可靠和安全的协议，HTTPS的广�
 
 注册功能实现了将S1和userId的绑定，注册流程同样是通过SSL/TLS通道进行的，流程如下：
 
-
+![](../.gitbook/assets/zhu-ce-gong-neng-she-ji.png)
 
 客户端提交H1，AS生成新的userId，用H1+SALT生成H1的加盐哈希，将S1和userId保存为新的用户，将userId返回给用户。
 
