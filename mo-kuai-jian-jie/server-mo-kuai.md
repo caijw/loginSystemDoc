@@ -44,14 +44,14 @@ msg是请求的返回message
 
 user\_id是新注册用户的id
 
-注册接口给用户分配一个userId，将userId和用户的S1保存起来，作为已经注册的用户标志。
+注册接口给用户分配一个userId，将userId和用户的H1保存起来，作为已经注册的用户标志。
 
 2、登录接口
 
 grpc接口
 
 ```cpp
-rpc loginAccount (loginRequest) returns (loginResponse) {}
+rpc loginAccount (loginRequest) returns (stream loginResponse) {}
 ```
 
 grpc请求结构体
@@ -63,7 +63,7 @@ message loginRequest {
 }
 ```
 
-user\_id是用户id，data是本系统的S1\(userId+timestamp\)，即以S1为公钥加密数据，server可以用S1解开后验证请求的的有效性
+user\_id是用户id，data是本系统的H1\(userId+timestamp\)，即以H1为公钥加密数据，server可以用H1解开后验证请求的的有效性
 
 grpc响应结构体
 
@@ -81,7 +81,9 @@ msg是请求的返回message
 
 st是本文的ST，即session ticket
 
-登录接口首先会用S1解开data数据，对比解密的userId是否和请求的userId一致，验证请求的有效性，然后会给登录请求下发一个session ticket，服务器从数据库中查询，st使用K\_AS\_SS作为公钥加密\(userId+timestamp+seq\)得到的session ticket，
+登录接口首先会用H1解开data数据，对比解密的userId是否和请求的userId一致，验证请求的有效性，然后会给登录请求下发一个session ticket，服务器从数据库中查询，st使用K\_AS\_SS作为公钥加密\(userId+timestamp+seq\)得到的session ticket。
+
+当该用户在其他设备登录后，可以通过服务器的stream推送一个下线的ret标志给对端客户端，强制对端客户端下线。
 
 3、session ticket校验接口
 
@@ -116,4 +118,6 @@ ret是校验接口的返回码
 msg是校验接口返回的消息
 
 验证session ticket，首先用K\_AS\_SS解密st，得到解密后的userId、timestamp、seq。对比userId是否和和请求的用户的userId相同，不同则说明请求无效，然后从数据库查询该用户的seq值，对比数据库的seq和解密后的seq，如果数据库seq不等于解密后的seq，说明该session ticket 已经是无效的了。最后如果验证都通过，则返回验证成功。这里verifyST接口可以部署在业务服务器，但是要维护业务服务器和AS之间的K\_AS\_SS。
+
+
 

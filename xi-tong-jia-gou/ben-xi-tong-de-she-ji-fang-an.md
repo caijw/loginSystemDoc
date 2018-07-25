@@ -12,9 +12,7 @@ SS: 业务服务器
 
 PWD: 用户的密码明文
 
-H1: PWD的一次哈希，此处哈希算法采用MD5，即 H1 = MD5\(PWD\)
-
-S1: H1的加盐哈希，即 S1 = MD5\(H1 + SALT\)
+H1: PWD的哈希，此处哈希算法采用argon2，即 H1 = argon2\(PWD, ...\)。argon2算法是2015年的Password ashing Competition冠军 [https://github.com/P-H-C/phc-winner-argon2](https://github.com/P-H-C/phc-winner-argon2)，该算法能够动态控制内存和cpu消耗，是一种非常安全的密码hash算法。
 
 K\(AS, SS\): AS 和 SS之间的共享对称加密密钥
 
@@ -26,9 +24,9 @@ ST: session ticket，作为appClient访问SS的session ticket，生成规则为�
 
 #### appClient向AS申请ST:
 
-appClient用S1作为对称加密密钥，加密userId和H1，发送给AS
+appClient用H1作为对称加密密钥，加密userId和timestamp，发送给AS
 
-AS收到appClient的请求后，根据userId在数据库中查找S1，解出 userID + H1，判断userID没有被篡改，生成TS，用S1作为密钥加密后发给appClient
+AS收到appClient的请求后，根据userId在数据库中查找H1，解出 userID + timestamp，判断userID没有被篡改，生成ST，用S1作为密钥加密后发给appClient
 
 #### appClient请求业务服务器服务:
 
@@ -46,7 +44,7 @@ SS用K\(AS, SS\)解密ST，得到userId，timestamp等，判断userId是否跟�
 
 #### 伪造客户端和重放：
 
-黑客即使知道S1，黑客不知道H1，无法算出S1\(H1 + userId\)，因此无法伪造成客户端请求AS。黑客不能通过重放伪造客户端，userId + S1\(userId + H1 + timestamp\)中带了时间戳，过期的登录请求会被拒绝。黑客可以通过窃听ST，用ST直接伪造成客户端请求SS。所以是黑客是可以伪造客户端请求SS的。
+黑客知道H1，可以算出H1\( userId + timestamp\)，因此可以伪造成客户端请求AS。黑客不能通过重放伪造客户端，userId + S1\(userId + H1 + timestamp\)中带了时间戳，过期的登录请求会被拒绝。黑客可以通过窃听ST，用ST直接伪造成客户端请求SS。所以是黑客是可以伪造客户端请求SS的。
 
 #### 中间人攻击：
 
@@ -54,9 +52,9 @@ SS用K\(AS, SS\)解密ST，得到userId，timestamp等，判断userId是否跟�
 
 #### 窃听和篡改：
 
-黑客知道了S1，在S1\(ST\)中，可以篡改和窃听ST。
+黑客知道了S1，在1\(ST\)中，可以篡改和窃听ST。
 
-因此拖库造成了一定的安全风险: 黑客可以伪造客户端请求SS，黑客可以窃听和篡改ST。
+因此拖库会造成很大的安全风险: 黑客可以伪造客户端请求SS，黑客可以窃听和篡改ST。
 
 ## 解决本系统的安全风险
 
@@ -74,45 +72,47 @@ SSL/TLS wiki: [https://en.wikipedia.org/wiki/Transport\_Layer\_Security](https:/
 
 因此，本设计方案只需要进行适当的改造，即可预防拖库造成的风险。
 
-![](../.gitbook/assets/deng-lu-xi-tong-an-quan-tong-dao%20%281%29.png)
+![](../.gitbook/assets/dan-yi-deng-lu-jiao-hu-di-1-ye.png)
 
 SSL/TLS协议已经被证明是高效、可靠和安全的协议，HTTPS的广泛应用可以证明这个事实。
 
 加入SSL/TLS后，即使被拖库：
 
-黑客无法伪造客户端与SS通信，即使有S1，黑客也无法窃听SSL/TLS安全通道。
+黑客无法伪造客户端与SS通信，即使有H1，黑客也无法窃听SSL/TLS安全通道。
 
-黑客无法窃听和篡改TS，因为用户无法窃听和篡改SSL/TLS安全通道。
+黑客无法窃听和篡改ST，因为用户无法窃听和篡改SSL/TLS安全通道。
 
 ## 注册功能设计
 
-注册功能实现了将S1和userId的绑定，注册流程同样是通过SSL/TLS通道进行的，流程如下：
+注册功能实现了将H1和userId的绑定，注册流程同样是通过SSL/TLS通道进行的，流程如下：
 
-![](../.gitbook/assets/zhu-ce-gong-neng-she-ji.png)
+![](../.gitbook/assets/zhu-ce-gong-neng-she-ji%20%281%29.png)
 
-客户端提交H1，AS生成新的userId，用H1+SALT生成H1的加盐哈希，将S1和userId保存为新的用户，将userId返回给用户。
+客户端提交H1，AS生成新的userId，将H1和userId保存为新的用户，将userId返回给用户。
 
-如果没有SSL/TLS通道的保证，这一步是很脆弱的，因为将H1明文在网上上传输很容易被黑客拿到，黑客可以通过查表的方式破解H1得到PWD。
+如果没有SSL/TLS通道的保证，这一步是很脆弱的，因为将H1在网上上传输很容易被黑客拿到，黑客知道了H1便可以通过其他手段伪造客户端登录请求，窃听数据等。
+
+即使被拖库，黑客无法窃听和篡改SSL/TLS通道，此时虽然知道H1，但是由于argon2算法的安全性，黑客碰撞出密码几乎不可能，因此也就无法伪造登录。
 
 ## 单一设备登录设计
 
-用户只能在一个设备上登录，切换登录终端时，其他已经登录的终端会被踢出。为了实现该功能，需要在用户在其他终端登录后，将上一个ST失效。
+用户只能在一个设备上登录，切换登录终端时，其他已经登录的终端会被踢出。为了实现该功能，需要在用户在其他终端登录后，将上一个ST失效，并将用户的连接断开。
 
 ### 表的改造
 
 在AS的登录验证中，维护了一个数据库表tb\_login\_info，tb\_login\_info表字段大概如下：
 
-| userID | S1 |
+| userID | H1 |
 | --- | --- |
 | kingweicai | abcdefg |
 
 为了保证新的登录生成的ST可以把原来的ST失效，需要给ST绑定一个id，并且将当前登录有效的ST的id保存在tb\_login\_info表中：
 
-| userID | S1 | seq |
+| userID | H1 | seq |
 | --- | --- |
 | kingweicai | abcdefg | 1 |
 
-![&#x5355;&#x4E00;&#x767B;&#x5F55;&#x4EA4;&#x4E92;&#x56FE;](../.gitbook/assets/dan-yi-deng-lu-jiao-hu.png)
+![](../.gitbook/assets/dan-yi-deng-lu-jiao-hu-di-1-ye-de-fu-ben.png)
 
 ### 算法的改造
 
@@ -124,13 +124,27 @@ SS验证ST时，需要请求验证tb\_login\_info中该userId行的seq值，如�
 
 当tb\_login\_info中的seq值增长到很大的时候，需要重新从0开始计数。
 
+### 将用户实时踢出
+
+借助grpc的stream接口，我们可以保持已登录设备和服务器之间的长连接，该连接只需要保持服务器到客户端方向的stream特性，暂时没必要保持双向的stream。
+
+服务器需要维护一个已经登录的用户的池子，当有新的用户登录时，需要在池子中查找是否已经存在该用户的stream连接，有的话，就通过该stream接口通知客户端进行下线处理，同时将该接口断开从池子里去掉，将新的stream接口加入到池子里。
+
+这个方案的一个缺点是需要维护每一个已经登录的用户的stream接口，资源消耗会比较大，同时在分布式环境下，在池子很大的情况下，查找是一件效率比较低，并且维护成本比较高的事情事情。
+
 
 
 ## 根据配置策略将已经登录的设备提出
 
+### 失效ST
+
 读取配置的策略，在tb\_login\_info表中，将命中策略的userId的那一行的值设置为无穷大的值（该值依赖相关数据库的实现），这样设置导致当前所有登录的设备都处于登录失效的状态。
 
 用户重新登录，AS查询tb\_login\_info表中，seq的值为无穷大，则新的seq需要重新从0开始计数，保证新的登录有效。
+
+### 设备自动下线
+
+同时，需要遍历我们维护的一个stream接口的池子，查找需要提出的登录设备，通过该接口向客户端发送下线通知，如何将其中池子中去掉。
 
 
 
