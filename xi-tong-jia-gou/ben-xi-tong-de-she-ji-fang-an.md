@@ -130,13 +130,15 @@ SS验证ST时，需要请求验证tb\_login\_info中该userId行的seq值，如�
 
 数据结构的设计：
 
-内存中维护了一个map，key为登录的用户的user id，value为最新登录的用户的seq。通过查询某个user id可以知道最新的seq，任何旧的seq的登录连接都会被断开。由于不同的登录请求有可能是在不同线程中处理的，不同线程会对该map进行读写，因此该map需要做好锁的保护，避免多线程之间的数据竞争。
+内存中维护了一个map，key为登录的用户的user id，value为最新登录的用户的seq。通过查询某个user id可以知道最新的seq，任何旧的seq的登录连接都会被断开。由于不同的登录请求有可能是在不同线程中处理的，不同线程会对该map进行读写，因此该map需要做好锁的保护，写map的时候需要加锁，读map的时候可以不用加锁，避免多线程之间写数据的竞争。
 
 实现了一个 [LoginStreamManager](https://github.com/caijw/loginSystem/blob/master/src/loginStreamManager.h#L16)的单实例类来维护该map。
 
 当有新的登录请求到来，计算该user id的新的seq并且如果其大于map中的，将其更新到map中，保持stream连接的，不断的轮训map查看该user id的seq是否比map中的小，是的话通知客户端退出登录，并且主动断开该stream连接。
 
-这个方案的缺点是需要维护每一个已经登录的用户的stream接口，资源消耗会比较大，同时在分布式环境下，需要将特定的user id的请求hash到指定的机器上，在池子很大的情况下，需要查询map结构并且需要加锁进行互斥，维护成本比较高。
+这个方案的缺点是需要维护每一个已经登录的用户的stream接口，资源消耗会比较大，同时在分布式环境下，需要将特定的user id的请求hash到指定的机器上，在池子很大的情况下，需要查询map结构并且需要加写锁进行互斥，维护成本比较高。
+
+补充：后面想到可以进行优化，把map数据结构放到共享内存中，类似的实现有redis和cmem等，其本质是key-value的数据集合，由redis去维护数据，做好数据保护，这样就不用把登录的请求hash给指定的机器处理，
 
 
 
