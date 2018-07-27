@@ -27,7 +27,7 @@ git clone --recursive [https://github.com/caijw/loginSystem.git](https://github.
 
 4、编译server：
 
-进入src目录，运行make，会在out目录生成server可执行文件，make过程可能会提示grpc的依赖没有安装，需要进行相关安装。
+进入src目录，运行make，会在out目录生成server可执行文件，make过程可能会提示grpc的依赖没有安装，需要进行相关安装。proto需要3版本，低于3的也需要升级到3
 
 5、编译ios client：
 
