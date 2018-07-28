@@ -15,15 +15,36 @@ git clone --recursive [https://github.com/caijw/loginSystem.git](https://github.
 
 {% embed data="{\"url\":\"https://github.com/grpc/grpc/blob/v1.13.x/INSTALL.md\",\"type\":\"link\",\"title\":\"grpc/grpc\",\"description\":\"grpc - The C based gRPC \(C++, Python, Ruby, Objective-C, PHP, C\#\)\",\"icon\":{\"type\":\"icon\",\"url\":\"https://github.com/fluidicon.png\",\"aspectRatio\":0},\"thumbnail\":{\"type\":\"thumbnail\",\"url\":\"https://avatars2.githubusercontent.com/u/7802525?s=400&v=4\",\"width\":400,\"height\":400,\"aspectRatio\":1}}" %}
 
-2、安装mongodb服务器：
+2、homebrew安装并启动mongodb服务器：
 
-{% embed data="{\"url\":\"https://www.mongodb.com/download-center\#atlas\",\"type\":\"link\",\"title\":\"MongoDB Download Center\",\"icon\":{\"type\":\"icon\",\"url\":\"https://www.mongodb.com/assets/images/global/favicon.ico\",\"aspectRatio\":0},\"thumbnail\":{\"type\":\"thumbnail\",\"url\":\"http://s3.amazonaws.com/info-mongodb-com/\_com\_assets/cms/mongodb-for-giant-ideas-bbab5c3cf8.png\",\"width\":1024,\"height\":512,\"aspectRatio\":0.5}}" %}
+```text
+没有安装homebrew：
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+```
 
-代码里面写死了服务器的地址和端口号 [https://github.com/caijw/loginSystem/blob/master/src/server.cpp\#L326](https://github.com/caijw/loginSystem/blob/master/src/server.cpp#L326)
+```text
+安装和启动mongod：
+brew install mongodb
+mkdir -p /data/db
+sudo mongod&
+```
+
+
 
 3、安装mongodb cpp驱动：
 
-{% embed data="{\"url\":\"https://mongodb.github.io/mongo-cxx-driver/mongocxx-v3/installation/\",\"type\":\"link\",\"title\":\"Installing the mongocxx driver\",\"icon\":{\"type\":\"icon\",\"url\":\"https://mongodb.github.io/mongo-cxx-driver/img/favicon.png\",\"aspectRatio\":0}}" %}
+```text
+
+git clone https://github.com/mongodb/mongo-c-driver.git
+cd mongo-c-driver
+git checkout v0.8.1
+mkdir cmake-build
+cd cmake-build
+cmake -DENABLE_AUTOMATIC_INIT_AND_CLEANUP=OFF ..
+make
+sudo make install
+
+```
 
 4、编译server：
 
