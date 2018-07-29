@@ -18,6 +18,14 @@ plog: 打日志模块
 
 argon2: 进行密码哈希计算的argon2算法库
 
+grpc: grpc项目代码
+
+mongo-c-driver: mongodb c 驱动代码
+
+mongo-cxx-driver mongodb cpp 驱动代码
+
+djinni: djinni代码
+
 ### djinni目录
 
 存放djinni配置和代码
