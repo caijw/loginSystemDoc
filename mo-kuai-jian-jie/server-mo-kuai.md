@@ -24,7 +24,7 @@ message registerRequest {
 }
 ```
 
-h1是密码的MD5，即H1
+h1是密码的argon2哈希，即H1
 
 nickname和phone\_num是一些用户信息
 
@@ -63,7 +63,7 @@ message loginRequest {
 }
 ```
 
-user\_id是用户id，data是本系统的H1\(userId+timestamp\)，即以H1为公钥加密数据，server可以用H1解开后验证请求的的有效性
+user\_id是用户id，data是本系统的H1\(userId+timestamp\)，即以H1为公钥加密数据，server可以用H1解开后验证请求的的有效性。
 
 grpc响应结构体
 
@@ -83,7 +83,7 @@ st是本文的ST，即session ticket
 
 登录接口首先会用H1解开data数据，对比解密的userId是否和请求的userId一致，验证请求的有效性，然后会给登录请求下发一个session ticket，服务器从数据库中查询，st使用K\_AS\_SS作为公钥加密\(userId+timestamp+seq\)得到的session ticket。
 
-当该用户在其他设备登录后，可以通过服务器的stream推送一个下线的ret标志给对端客户端，强制对端客户端下线。
+响应是stream类型的，可以保持server不断的对client进行push消息，可以实现自动下线踢出客户端功能。当该用户在其他设备登录后，可以通过服务器的stream推送一个下线的ret标志给对端客户端，强制对端客户端下线。
 
 3、session ticket校验接口
 
