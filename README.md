@@ -4,7 +4,9 @@
 
 登录系统项目代码地址    [https://github.com/caijw/loginSystem](https://github.com/caijw/loginSystem)
 
-###  下载代码：
+##  运行项目代码：
+
+### 1、下载代码：
 
 git 下载的方式：
 
@@ -12,7 +14,7 @@ git 下载的方式：
 git clone  https://github.com/caijw/loginSystem.git
 ```
 
-### 安装依赖：
+### 2、安装依赖：
 
 ```text
 cd loginSystem
@@ -21,7 +23,7 @@ sh ./install.sh
 
 本项目有大量的依赖：mongo\_c\_driver、mongo\_cxx\_driver、grpc、protobuf 3、cocoapods还有其他编译相关的所需软件，因此安装依赖过程是一个漫长的过程。
 
-### 生成项目执行程序:
+### 3、生成项目执行程序:
 
 ```text
 sh ./make.sh
