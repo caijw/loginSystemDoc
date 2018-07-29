@@ -41,6 +41,8 @@ sh ./make.sh
 sh ./runServer.sh
 ```
 
+或者到out目录下运行server程序。
+
 如果后续只是想单独的打开客户端的xcode项目，可以运行：
 
 ```text
