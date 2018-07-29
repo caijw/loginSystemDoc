@@ -6,6 +6,10 @@
 
 ##  运行项目代码：
 
+{% hint style="info" %}
+运行项目代码适用于macOS
+{% endhint %}
+
 ### 1、下载代码：
 
 git 下载的方式：
