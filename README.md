@@ -25,7 +25,7 @@ cd loginSystem
 sh ./install.sh
 ```
 
-本项目有大量的依赖：mongo\_c\_driver、mongo\_cxx\_driver、grpc、protobuf 3、cocoapods还有其他编译相关的所需软件，因此安装依赖过程是一个漫长的过程。
+本项目有大量的依赖：mongo\_c\_driver、mongo\_cxx\_driver、grpc、protobuf 3、cocoapods还有其他编译相关的所需软件，因此安装依赖过程是一个漫长的过程，安装过程需要输入root密码。
 
 ### 3、生成项目执行程序:
 
