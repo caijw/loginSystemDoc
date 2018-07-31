@@ -18,7 +18,7 @@ git clone --recursive  https://github.com/caijw/loginSystem.git
 
 安装mongodb：
 
-{% embed data="{\"url\":\"https://www.mongodb.com/download-center\#community\\n\",\"type\":\"link\",\"title\":\"MongoDB Download Center\",\"icon\":{\"type\":\"icon\",\"url\":\"https://www.mongodb.com/assets/images/global/favicon.ico\",\"aspectRatio\":0},\"thumbnail\":{\"type\":\"thumbnail\",\"url\":\"http://s3.amazonaws.com/info-mongodb-com/\_com\_assets/cms/mongodb-for-giant-ideas-bbab5c3cf8.png\",\"width\":1024,\"height\":512,\"aspectRatio\":0.5}}" %}
+[https://www.mongodb.com/download-center\#community](https://www.mongodb.com/download-center#community)
 
 安装项目依赖：
 
