@@ -6,46 +6,50 @@
 
 ##  运行项目代码：
 
-{% hint style="info" %}
-运行项目代码适用于macOS
-{% endhint %}
-
 ### 1、下载代码：
 
-git 下载的方式：
+git 下载的方式：加 recurisve参数可以将submodule都下载下来
 
 ```text
-git clone  https://github.com/caijw/loginSystem.git
+git clone --recursive  https://github.com/caijw/loginSystem.git
 ```
 
-### 2、安装依赖：
+### 2、前置依赖：
+
+安装mongodb：
+
+{% embed data="{\"url\":\"https://www.mongodb.com/download-center\#community\\n\",\"type\":\"link\",\"title\":\"MongoDB Download Center\",\"icon\":{\"type\":\"icon\",\"url\":\"https://www.mongodb.com/assets/images/global/favicon.ico\",\"aspectRatio\":0},\"thumbnail\":{\"type\":\"thumbnail\",\"url\":\"http://s3.amazonaws.com/info-mongodb-com/\_com\_assets/cms/mongodb-for-giant-ideas-bbab5c3cf8.png\",\"width\":1024,\"height\":512,\"aspectRatio\":0.5}}" %}
+
+安装项目依赖：
 
 ```text
 cd loginSystem
-sh ./install.sh
+sh ./deps_install.sh
 ```
 
-本项目有大量的依赖：mongo\_c\_driver、mongo\_cxx\_driver、grpc、protobuf 3、cocoapods还有其他编译相关的所需软件，因此安装依赖过程是一个漫长的过程，安装过程需要输入root密码。
+依赖的有mongo-c-driver驱动、mongo-cxx-driver驱动
 
-### 3、生成项目执行程序:
+编译server：
 
 ```text
-sh ./make.sh
+bazel build //src:server
 ```
 
-生成程序后，会自动运行server，server所在的目录为loginSystem/out下的server。同时会打开客户端的xcode项目，可以在xcode中运行客户端软件。
-
-如果后续只是想单独的运行server，可以运行：
-
-```text
-sh ./runServer.sh
-```
-
-或者到out目录下运行server程序。
-
-如果后续只是想单独的打开客户端的xcode项目，可以运行：
+打开ios客户端的xcode项目：
 
 ```text
 sh ./runClient.sh
 ```
+
+### 3、运行程序
+
+运行server：
+
+```text
+bazel run //src:server
+```
+
+运行ios客户端：
+
+xcode中运行项目即可
 
