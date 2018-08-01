@@ -23,6 +23,7 @@ description: 关于登录系统的项目背景介绍
 1. C++实现ios和android跨平台：[https://github.com/dropbox/djinni](https://github.com/dropbox/djinni)
 2. grpc文档：[https://grpc.io/](https://grpc.io/)
 3. mongodb：[https://docs.mongodb.com/](https://docs.mongodb.com/)
+4. bazel: [https://bazel.build/](https://bazel.build/)
 
 ## 项目代码：
 
