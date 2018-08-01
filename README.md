@@ -41,6 +41,8 @@ bazel build //src:server
 sh ./runClient.sh
 ```
 
+或者直接打开[https://github.com/caijw/loginSystem/tree/master/login\_client\_ios/login\_client\_ios.xcworkspace](https://github.com/caijw/loginSystem/tree/master/login_client_ios/login_client_ios.xcworkspace)   即可
+
 编译cpp的client（可选）:
 
 ```text
@@ -51,7 +53,9 @@ bazel  build  //src:client
 
 db配置初始化：
 
-数据库需要建一个login\_system的db，里面有一个user\_id和user\_info的表，可以导入仓库上的初始化配置：[https://github.com/caijw/loginSystem/tree/master/dbdirectory/login\_system](https://github.com/caijw/loginSystem/tree/master/dbdirectory/login_system)
+数据库需要建一个login\_system的db，里面有一个user\_id和user\_info的表，可以导入仓库上的初始化配置[https://github.com/caijw/loginSystem/tree/master/dbdirectory/login\_system](https://github.com/caijw/loginSystem/tree/master/dbdirectory/login_system)
+
+进入loginSystem目录，下面有一个dbdirectory目录，运行
 
 ```text
 mongorestore -h 127.0.0.1:27017  --dir dbdirectory/
