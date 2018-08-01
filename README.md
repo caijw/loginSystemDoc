@@ -43,6 +43,22 @@ sh ./runClient.sh
 
 ### 3、运行程序
 
+db配置初始化：
+
+数据库需要建一个login\_system的db，里面有一个user\_id和user\_info的表，可以导入仓库上的初始化配置：[https://github.com/caijw/loginSystem/tree/master/dbdirectory/login\_system](https://github.com/caijw/loginSystem/tree/master/dbdirectory/login_system)
+
+```text
+mongorestore -h 127.0.0.1:27017  --dir dbdirectory/
+```
+
+运行mongodb：
+
+--dbpath可以指定你的database所在的目录，不指定该参数的话，默认是/data/db
+
+```text
+sudo   mongod   --dbpath  you_database_path
+```
+
 运行server：
 
 ```text
