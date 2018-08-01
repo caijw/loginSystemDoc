@@ -10,21 +10,13 @@ git clone --recursive [https://github.com/caijw/loginSystem.git](https://github.
 
 存放依赖的第三方库
 
-cryptopp：用来做加密解密的运算库
-
 djinni：跨平台的代码生成器
 
-plog: 打日志模块
-
 argon2: 进行密码哈希计算的argon2算法库
-
-grpc: grpc项目代码
 
 mongo-c-driver: mongodb c 驱动代码
 
 mongo-cxx-driver mongodb cpp 驱动代码
-
-djinni: djinni代码
 
 ### djinni目录
 
@@ -33,10 +25,6 @@ djinni: djinni代码
 ### login\_client\_ios目录
 
 存放ios客户端项目
-
-### out目录
-
-server执行文件和SSL/TLS证书等
 
 ### protos目录
 
