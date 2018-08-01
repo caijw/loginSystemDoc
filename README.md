@@ -41,6 +41,12 @@ bazel build //src:server
 sh ./runClient.sh
 ```
 
+编译cpp的client（可选）:
+
+```text
+bazel  build  //src:client
+```
+
 ### 3、运行程序
 
 db配置初始化：
@@ -68,4 +74,10 @@ bazel run //src:server
 运行ios客户端：
 
 xcode中运行项目即可
+
+运行cpp的client：
+
+```text
+bazel run //src:client
+```
 

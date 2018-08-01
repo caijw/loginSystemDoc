@@ -11,6 +11,7 @@
   * [server模块](mo-kuai-jian-jie/server-mo-kuai.md)
   * [ios客户端模块](mo-kuai-jian-jie/ios-ke-hu-duan-mo-kuai.md)
   * [android客户端模块](mo-kuai-jian-jie/android-ke-hu-duan-mo-kuai.md)
+  * [cpp client](mo-kuai-jian-jie/cpp-client.md)
 * [数据库设计](shu-ju-ku-she-ji.md)
 * [性能与测试](xing-neng-ce-shi.md)
 * [总结](zong-jie.md)

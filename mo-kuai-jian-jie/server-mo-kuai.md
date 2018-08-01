@@ -119,5 +119,36 @@ msg是校验接口返回的消息
 
 验证session ticket，首先用K\_AS\_SS解密st，得到解密后的userId、timestamp、seq。对比userId是否和和请求的用户的userId相同，不同则说明请求无效，然后从数据库查询该用户的seq值，对比数据库的seq和解密后的seq，如果数据库seq不等于解密后的seq，说明该session ticket 已经是无效的了。最后如果验证都通过，则返回验证成功。这里verifyST接口可以部署在业务服务器，但是要维护业务服务器和AS之间的K\_AS\_SS。
 
+4、剔除用户接口
 
+grpc接口
+
+```text
+rpc logout(logoutRequest) returns (logoutResponse) {}
+```
+
+grpc请求结构体
+
+```text
+message logoutRequest {
+	string user_id = 1;
+}
+```
+
+user\_id是需要踢出的用户的user id
+
+grpc响应结构体
+
+```text
+message logoutResponse {
+	int32 ret = 1;
+	string msg = 2;
+}
+```
+
+ret为响应的返回码
+
+msg为响应的消息说明。
+
+该接口实现了将一个用户强制下线的功能。
 
