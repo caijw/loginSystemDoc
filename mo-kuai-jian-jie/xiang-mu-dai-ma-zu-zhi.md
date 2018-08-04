@@ -6,6 +6,10 @@
 
 git clone --recursive [https://github.com/caijw/loginSystem.git](https://github.com/caijw/loginSystem.git) 可以将依赖一次性下载
 
+### libs目录
+
+存放依赖 的第三方库的头文件和编译后的库文件。
+
 ### deps目录
 
 存放依赖的第三方库

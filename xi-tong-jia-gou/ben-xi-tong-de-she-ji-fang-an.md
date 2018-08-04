@@ -103,13 +103,13 @@ SSL/TLS协议已经被证明是高效、可靠和安全的协议，HTTPS的广�
 在AS的登录验证中，维护了一个数据库表tb\_login\_info，tb\_login\_info表字段大概如下：
 
 | userID | H1 |
-| --- | --- |
+| :--- | :--- |
 | kingweicai | abcdefg |
 
 为了保证新的登录生成的ST可以把原来的ST失效，需要给ST绑定一个id，并且将当前登录有效的ST的id保存在tb\_login\_info表中：
 
 | userID | H1 | seq |
-| --- | --- |
+| :--- | :--- | :--- |
 | kingweicai | abcdefg | 1 |
 
 ![](../.gitbook/assets/dan-yi-deng-lu-jiao-hu-di-1-ye-de-fu-ben.png)
